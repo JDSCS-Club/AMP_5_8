@@ -83,40 +83,40 @@
 #define OSP_LED_Port               GPIOD
 
 
-#define AMP_STANDBY_Pin           GPIO_PIN_7
-#define AMP_STANDBY_Port          GPIOD
-
-
-
-#define BK_OUT1_Pin                GPIO_PIN_8
-#define BK_OUT1_Port               GPIOD
-
-
-
-#define BK_OUT2_Pin                GPIO_PIN_9
-#define BK_OUT2_Port               GPIOD
-
-
-
-#define BK_OUT3_Pin                GPIO_PIN_10
-#define BK_OUT3_Port               GPIOD
-
-
-
-
-#define BK_OUT4_Pin                GPIO_PIN_11
-#define BK_OUT4_Port               GPIOD
-
-
-
-
-#define BK_OUT5_Pin                GPIO_PIN_12
-#define BK_OUT5_Port               GPIOD
-
-
-
-#define BK_OUT6_Pin                GPIO_PIN_13
-#define BK_OUT6_Port               GPIOD
+//#define AMP_STANDBY_Pin           GPIO_PIN_7
+//#define AMP_STANDBY_Port          GPIOD
+//
+//
+//
+//#define BK_OUT1_Pin                GPIO_PIN_8
+//#define BK_OUT1_Port               GPIOD
+//
+//
+//
+//#define BK_OUT2_Pin                GPIO_PIN_9
+//#define BK_OUT2_Port               GPIOD
+//
+//
+//
+//#define BK_OUT3_Pin                GPIO_PIN_10
+//#define BK_OUT3_Port               GPIOD
+//
+//
+//
+//
+//#define BK_OUT4_Pin                GPIO_PIN_11
+//#define BK_OUT4_Port               GPIOD
+//
+//
+//
+//
+//#define BK_OUT5_Pin                GPIO_PIN_12
+//#define BK_OUT5_Port               GPIOD
+//
+//
+//
+//#define BK_OUT6_Pin                GPIO_PIN_13
+//#define BK_OUT6_Port               GPIOD
 
 
 

@@ -285,8 +285,6 @@ void ONTD(uint8_t IN,uint8_t *OUT,uint8_t MS,int *CLK );
 void PRINT_SYSLOG(char *format, ...);
 
 
-void AUDIO_AMP_Boot_Set(void);
-
 ///*****************************************************************************
 //* @brief - 통신 수신 구조체 선언 부분.
 //* @param -

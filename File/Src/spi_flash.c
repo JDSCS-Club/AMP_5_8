@@ -29,16 +29,18 @@
 #define WREN       0x06  /* Write enable instruction */
 #define WRDI       0x04  /* Write disables instruction */
 
-
-
 #define READ       0x03  /* Read from Memory Read */
 #define HS_READ    0x0B  /* *HighSpeed_Read*/
 #define RDSR       0x05  /* Read Status Register instruction  */
 
+
+
+
+
 #define ULBPR	   0x98  /* Global Block Protection Unlock */
-
-
 #define RDID       0x9F  /* Read identification */
+
+
 
 #define SE         0x20  /* Sector Erase instruction  4KByte Memory Array*/
 #define BE         0xD8  /* Bulk Erase instruction  64,32 or 8KByte Memory Array*/
@@ -90,17 +92,21 @@ void SPI_FLASH_Main(void)
 		SPI_FLASH_ID = SPI_FLASH_ReadID(); /* Get SPI Flash ID */
 		//SPI_FLASH_BufferRead(Rx_Buffer, sSpi_Mermory_Address, SPI_RX_BufferSize()); /* Read data from SPI FLASH memory */
 		
-		if(SST26VF032B_FLASH_ID == (SPI_FLASH_ID&0xFFFF))
+		if((SST26VF032B_FLASH_ID&0xFFFF) == (SPI_FLASH_ID&0xFFFF))
 		{
      
           
 			SPI_FLASH_SectorErase(sSpi_Mermory_Address); /* Erase SPI FLASH Sector to write on */
-			//	
-			// SPI_Chip_Erase();
-			//	
-			SPI_FLASH_BufferWrite(SPI_Tx_Buffer, sSpi_Mermory_Address, 20); /* Write Tx_Buffer data to SPI FLASH memory */
+				
+            HAL_Delay(100); //메모리 Erase 하는 사긴이 많이 소유.
+			 //SPI_Chip_Erase();
+				
+			SPI_FLASH_BufferWrite(SPI_Tx_Buffer, sSpi_Mermory_Address, sizeof(SPI_Tx_Buffer)); /* Write Tx_Buffer data to SPI FLASH memory */
 	
-			SPI_FLASH_BufferRead(SPI_Rx_Buffer, sSpi_Mermory_Address, 20); /* Read data from SPI FLASH memory */
+            HAL_Delay(10);
+            
+			SPI_FLASH_BufferRead(SPI_Rx_Buffer, sSpi_Mermory_Address, sizeof(SPI_Tx_Buffer)); /* Read data from SPI FLASH memory */
+            
 			//nBufCmapCnt = Buffercmp(SPI_Tx_Buffer, SPI_Rx_Buffer, 20); /* Check the corectness of written dada */
 
 			//	SPI_FLASH_SectorErase(SPI_FLASH_SectorToErase);
@@ -509,8 +515,6 @@ uint32_t SPI_FLASH_ReadID(void)
 	HAL_SPI_TransmitReceive(&SpiMemoryHandle,tx_spi_buf,rx_spi_buf,1,1);
 	Temp1 = rx_spi_buf[0];
 
-	
-	
 	tx_spi_buf[0] = Dummy_Byte;
 	HAL_SPI_TransmitReceive(&SpiMemoryHandle,tx_spi_buf,rx_spi_buf,1,1);
 	Temp2 = rx_spi_buf[0];
@@ -712,13 +716,13 @@ void SPI_FLASH_GlobalBlockProtec(void)
 * @param -
 * @retval-
 ******************************************************************************/
-void Error_Handler(void)
-{
-    /* Turn LED5 on */
-    while(1)
-    {
-    }
-}
+//void Error_Handler(void)
+//{
+//    /* Turn LED5 on */
+//    while(1)
+//    {
+//    }
+//}
 
 /*****************************************************************************
 * @brief -

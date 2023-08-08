@@ -313,6 +313,8 @@ int main(void)
 	
 
 	Flash_Init();
+    SPI_FLASH_Init();
+    
 	HAL_Delay(10);
 
 
@@ -322,11 +324,12 @@ int main(void)
     MX_ADC3_Init();
     //----------------------------
     
+    
+    
+    njw1192_default_value();
 
-	//--------------LCD 초기 설정 부분.
-	OLED_1in3_c_test();
-    OLED_Print(); // 약 350ms 필요.
-	//-----------------------
+    njw1192_mute(false);
+
 	
 	
     MyPrintf_USART1("SystemClock  = %d/ AHB(HCLK) : %d / APB1(PCLK1) : %d / APBP2(PCLK2) : %d \n\r", HAL_RCC_GetSysClockFreq(), HAL_RCC_GetHCLKFreq(), HAL_RCC_GetPCLK1Freq(), HAL_RCC_GetPCLK2Freq());
@@ -364,7 +367,6 @@ int main(void)
     sprintf(&mLCDPrintBuf[2][0], "--------------------");
     
     
-    AUDIO_AMP_Boot_Set();
     
     WWDG_Init(); //
     
@@ -382,7 +384,7 @@ int main(void)
 		/* 내부 메모리 저장 및 읽기 */  
 		Flash_Main();
 	  
-		//SPI_FLASH_Main();
+		//SPI_FLASH_Main(); //메모리 기능 TEST 완료.
     
 		USARTRX_MainPro();
     
@@ -410,7 +412,7 @@ int main(void)
                 s_100msCng = HAL_GetTick();
 
                     
-                MX_I2C_Process();
+            
 
             }
         
@@ -432,25 +434,18 @@ int main(void)
 
                 sOLED_InitCnt++;
                 
-                if(!(sOLED_InitCnt % 120) && (sOLED_InitCnt < 400)) //Power On 400초 동안 ( 120초 마다 한번씩  초기화 로직 추가.)
-                {
-                    OLED_1in3_C_Init();
-                }
+               
                 
                 mLed_Process_Flag.sOLED_Display_Flag = true;
                 
-               // MyPrintf_USART1("OLED Tim s: %d \n\r",HAL_GetTick());
-                
-                OLED_Print(); // 약 150ms 필요. --> 클럭속도 4000 향상하면 50ms 까지 감소.
-            
-                //MyPrintf_USART1("OLED Tim e: %d \n\r",HAL_GetTick());
+             
                 
                 mLed_Process_Flag.sOLED_Display_Flag = false;
                 
                 if(mLed_Process_Flag.sAudio_Play_mode == true)
                 {
                     
-                    AMP_FAULT();
+                   
                 }
                 
                  // 계속 전송하는 방식으로 변경. 
@@ -514,8 +509,7 @@ int main(void)
             
             mLed_Process_Flag.sSpk_check_Flag = true;
                 
-            AMP_SPK_CHECK();
-            
+
         }
     
             
@@ -675,34 +669,34 @@ static void BSP_Config(void)
 	HAL_GPIO_Init(GPIOC, &GPIO_InitStructure);
   
     
-	//AMP SD
-	__GPIOD_CLK_ENABLE();
-
-	GPIO_InitStructure.Pin = AMP_STANDBY_Pin;
-	GPIO_InitStructure.Pull = GPIO_NOPULL;
-	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);
-    
-	HAL_GPIO_WritePin(AMP_STANDBY_Port, AMP_STANDBY_Pin, GPIO_PIN_SET);
-    
-
-	//BK_OUT
-	__GPIOD_CLK_ENABLE();
-
-	GPIO_InitStructure.Pin = BK_OUT1_Pin | BK_OUT2_Pin | BK_OUT3_Pin | BK_OUT4_Pin | BK_OUT5_Pin | BK_OUT6_Pin;
-	GPIO_InitStructure.Pull = GPIO_NOPULL;
-	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);
-    
-	HAL_GPIO_WritePin(BK_OUT1_Port, BK_OUT1_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(BK_OUT2_Port, BK_OUT2_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(BK_OUT3_Port, BK_OUT3_Pin, GPIO_PIN_SET);
-    
-	HAL_GPIO_WritePin(BK_OUT4_Port, BK_OUT4_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(BK_OUT5_Port, BK_OUT5_Pin, GPIO_PIN_SET);
-	HAL_GPIO_WritePin(BK_OUT6_Port, BK_OUT6_Pin, GPIO_PIN_SET);
+//	//AMP SD
+//	__GPIOD_CLK_ENABLE();
+//
+//	GPIO_InitStructure.Pin = AMP_STANDBY_Pin;
+//	GPIO_InitStructure.Pull = GPIO_NOPULL;
+//	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+//    GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+//	HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);
+//    
+//	HAL_GPIO_WritePin(AMP_STANDBY_Port, AMP_STANDBY_Pin, GPIO_PIN_SET);
+//    
+//
+//	//BK_OUT
+//	__GPIOD_CLK_ENABLE();
+//
+//	GPIO_InitStructure.Pin = BK_OUT1_Pin | BK_OUT2_Pin | BK_OUT3_Pin | BK_OUT4_Pin | BK_OUT5_Pin | BK_OUT6_Pin;
+//	GPIO_InitStructure.Pull = GPIO_NOPULL;
+//	GPIO_InitStructure.Mode = GPIO_MODE_OUTPUT_PP;
+//	GPIO_InitStructure.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+//	HAL_GPIO_Init(GPIOD, &GPIO_InitStructure);
+//    
+//	HAL_GPIO_WritePin(BK_OUT1_Port, BK_OUT1_Pin, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(BK_OUT2_Port, BK_OUT2_Pin, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(BK_OUT3_Port, BK_OUT3_Pin, GPIO_PIN_SET);
+//    
+//	HAL_GPIO_WritePin(BK_OUT4_Port, BK_OUT4_Pin, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(BK_OUT5_Port, BK_OUT5_Pin, GPIO_PIN_SET);
+//	HAL_GPIO_WritePin(BK_OUT6_Port, BK_OUT6_Pin, GPIO_PIN_SET);
     
 
 	//Mute
@@ -1044,6 +1038,9 @@ void Time_Main(void)
             //----------------------------------------
             processCurrentVal();
             //----------------------------------------
+            
+           
+            
         }
         else if(mLed_Process_Flag.sCurrentTestFlag == FALSE)
         {
@@ -1059,7 +1056,7 @@ void Time_Main(void)
 	{
 
         
-        d_10Sec_Cnt++;
+        
 
         
         sprintf(&mLCDPrintBuf[0][0], "IP : %s", ip4addr_ntoa(&gnetif.ip_addr));
@@ -1117,6 +1114,20 @@ void Time_Main(void)
         
         
         mTimerFlag_10s = 1;
+        d_10Sec_Cnt++;
+        
+        if(d_10Sec_Cnt & 0x01)
+        {
+        
+         setAmp_Mute_1(false);
+         setAmp_Mute_2(false);
+        }
+        else
+        {
+            setAmp_Mute_1(true);
+            setAmp_Mute_2(true);
+            
+        }
         
         
 		if (netif_is_link_up(&gnetif))  // 링크 UP인 경우에만 동작 한다.
@@ -1321,7 +1332,7 @@ static void RTC_TimeShow(uint8_t* showtime)
 
 	HAL_RTC_SetAlarm_IT(&RtcHandle, &salarmstructure, RTC_FORMAT_BCD);
 
-	//MyPrintf_USART1("--------Timer Count : %02d:%02d:%02d \n\r", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds));
+	MyPrintf_USART1("--------Timer Count : %02d:%02d:%02d \n\r", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds));
     
     if(getSW_RS()|| getSW_AR() || getSW_SL() || getSW_SL()) // 접점 신호가 있으면 접점 신호를 출력한다.
     {
@@ -1564,62 +1575,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 * @param -
 * @retval-
 ******************************************************************************/
-void AUDIO_AMP_Boot_Set(void)
-{
-    uint8_t     nRbuf_1[2];
-    
-    //--------------AMP IC 추기 설정 부분.
-	setAMP_Standby(true); // 모든 AMP IC
-    HAL_Delay(10);
-    setAMP_Standby(false); // 모든 AMP IC
-    HAL_Delay(10);
-    setAMP_Standby(true); // 모든 AMP IC
-    
-    njw1192_default_value();
-    HAL_Delay(10);
-    
-    
-    
-    //-------AMP----------
-	AMP_Init(AMP_ID_1);
-    
-    HAL_Delay(100);
-	//AMP MUTE
 
-    AMP_Mute_ON(AMP_ID_1, AMP_CH_All, AMP_ID_2, AMP_CH_All, AMP_ID_3, AMP_CH_All); // amp ic all mute
-	
-    HAL_Delay(100);
-    
-    nRbuf_1[0] = 0xFF;
-    I2C_HAL_ReadBytes(&hi2c2, AMP_ID_1, 0x06, (uint8_t *)nRbuf_1, 1);
-    MyPrintf_USART1("getAmp1 Mode read :%02X \r\n", nRbuf_1[0]); 
-
-    nRbuf_1[0] = 0xFF;
-    I2C_HAL_ReadBytes(&hi2c2, AMP_ID_2, 0x06, (uint8_t *)nRbuf_1, 1);     
-    MyPrintf_USART1("getAmp2 Mode read :%02X \r\n", nRbuf_1[0]); 
-
-    nRbuf_1[0] = 0xFF;
-    I2C_HAL_ReadBytes(&hi2c2, AMP_ID_3, 0x06, (uint8_t *)nRbuf_1, 1);
-    MyPrintf_USART1("getAmp3 Mode read :%02X \r\n", nRbuf_1[0]); 
-   
-    //setAMP_Standby(false); // 모든 AMP IC
-	
-    
-    setBk_Out_1(false);
-    setBk_Out_3(false);
-    setBk_Out_5(false);
-
-    setBk_Out_6(false);
-        
-
-    
-	// AUDIO IC MUTE 기능 OFF 초기화
-	setAmp_Mute_1(true);
-	setAmp_Mute_2(true);
-    
-    njw1192_mute(true); // Audio Mute 
-    //-----------------------------------
-}
 /*****************************************************************************
 * @brief - Error_Handler
 * @param -
