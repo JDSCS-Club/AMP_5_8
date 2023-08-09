@@ -138,6 +138,7 @@ uint8_t mAlarmAEventCallback_Flag = 5;
 
 
 uint8_t mDI_CheckFlag = 0;
+uint8_t RemDI_CheckFlag = 0;
 
 
 /* Private functions ---------------------------------------------------------*/
@@ -330,6 +331,9 @@ int main(void)
 
     njw1192_mute(false);
 
+    //Play ON
+    setAmp_Mute_1(false);
+    setAmp_Mute_2(false);
 	
 	
     MyPrintf_USART1("SystemClock  = %d/ AHB(HCLK) : %d / APB1(PCLK1) : %d / APBP2(PCLK2) : %d \n\r", HAL_RCC_GetSysClockFreq(), HAL_RCC_GetHCLKFreq(), HAL_RCC_GetPCLK1Freq(), HAL_RCC_GetPCLK2Freq());
@@ -992,6 +996,8 @@ int d_AR_Cnt;
 uint8_t d_RS_Flag;
 int d_RS_Cnt;
 
+uint8_t d_BR_Flag;
+int d_BR_Cnt;
 
 void Time_Main(void)
 {
@@ -1008,9 +1014,39 @@ void Time_Main(void)
     ONTD(getSW_SL(),&d_SL_Flag,5,&d_SL_Cnt);
     ONTD(getSW_AR(),&d_AR_Flag,5,&d_AR_Cnt);
     ONTD(getSW_RS(),&d_RS_Flag,5,&d_RS_Cnt);
+    ONTD(getSW_Broad(),&d_BR_Flag,5,&d_BR_Cnt);
+
         
             
-    mDI_CheckFlag = ((d_SR_Flag << 3) | (d_SL_Flag << 2) | ( d_AR_Flag<< 1) | (d_RS_Flag & 0x01));  
+    mDI_CheckFlag = ((d_BR_Flag << 4) |(d_AR_Flag << 3) | (d_SR_Flag << 2) | ( d_SL_Flag<< 1) | (d_RS_Flag & 0x01));  
+    
+#if 0 // 접점 신호를 받아서 AMP MUTE 처리 하는 부분.
+    if((RemDI_CheckFlag != mDI_CheckFlag) && mDI_CheckFlag) 
+    {
+        RemDI_CheckFlag = mDI_CheckFlag;
+        
+        if(d_AR_Flag || d_BR_Flag || d_RS_Flag)
+        {
+            
+            setAmp_Mute_1(false);
+            
+        }
+        
+        if(d_SR_Flag || d_SL_Flag)
+        {
+        
+            setAmp_Mute_2(false);
+        }
+        
+        
+    }
+    else if(!mDI_CheckFlag) //방송 출력 접점이 없으면.
+    {
+        setAmp_Mute_1(true);
+        setAmp_Mute_2(true);
+    }
+    
+#endif
     
     
     
@@ -1116,18 +1152,24 @@ void Time_Main(void)
         mTimerFlag_10s = 1;
         d_10Sec_Cnt++;
         
-        if(d_10Sec_Cnt & 0x01)
-        {
-        
-         setAmp_Mute_1(false);
-         setAmp_Mute_2(false);
-        }
-        else
-        {
-            setAmp_Mute_1(true);
-            setAmp_Mute_2(true);
-            
-        }
+//        if(d_10Sec_Cnt & 0x01)
+//        {
+//         
+//          // NO Play
+//         setAmp_Mute_1(false);
+//         setAmp_Mute_2(false);
+//         
+//         MyPrintf_USART1("Temp AMP_MUTE OFF\r\n");
+//        }
+//        else
+//        {
+//            //Play ON
+//            setAmp_Mute_1(true);
+//            setAmp_Mute_2(true);
+//            
+//            MyPrintf_USART1("Temp AMP_MUTE ON \r\n");
+//            
+//        }
         
         
 		if (netif_is_link_up(&gnetif))  // 링크 UP인 경우에만 동작 한다.
@@ -1176,7 +1218,7 @@ void Time_Main(void)
                  udp_SysLog_Connect(0," @@@@  CPU Processing SystemReset ");
 			     MyPrintf_USART1(" @@@@  CPU Processing SystemReset \n\r");
 
-			     HAL_NVIC_SystemReset(); // 장치 Reset 한다.
+			     //HAL_NVIC_SystemReset(); // 장치 Reset 한다.
                 
             }
 			
@@ -1190,7 +1232,7 @@ void Time_Main(void)
 			if ((m_Main_TIM_Cnt_Reset) >= 6) // 부팅하고 60초 동안 네트워크 연결이 없으면, 리셋 한다.
 			{
                 
-				HAL_NVIC_SystemReset();
+				//HAL_NVIC_SystemReset();
 			}
 
             
@@ -1334,13 +1376,15 @@ static void RTC_TimeShow(uint8_t* showtime)
 
 	MyPrintf_USART1("--------Timer Count : %02d:%02d:%02d \n\r", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds));
     
-    if(getSW_RS()|| getSW_AR() || getSW_SL() || getSW_SL()) // 접점 신호가 있으면 접점 신호를 출력한다.
+    if(getSW_RS()|| getSW_AR() || getSW_SL() || getSW_SR() || getSW_Broad()) // 접점 신호가 있으면 접점 신호를 출력한다.
     {
-        sprintf(&mLCDPrintBuf[3][0], "%02d:%02d:%02d", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds));
+        MyPrintf_USART1("RS-%02d:AR-%02d:SL-%02d:SR-%02d:BR-%02d\n\r" , getSW_RS(),getSW_AR(),getSW_SL() ,getSW_SR(),getSW_Broad());
+       // sprintf(&mLCDPrintBuf[3][0], "%02d:%02d:%02d", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds));
+   
     }
     else
     {
-        sprintf(&mLCDPrintBuf[3][0], "%02d:%02d:%02d-(%02d/%02d)", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds),IP_ADDR1_INPUT_DATA,IP_ADDR2_INPUT_DATA);
+      //  sprintf(&mLCDPrintBuf[3][0], "%02d:%02d:%02d-(%02d/%02d)", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds),IP_ADDR1_INPUT_DATA,IP_ADDR2_INPUT_DATA);
 
     }
 }

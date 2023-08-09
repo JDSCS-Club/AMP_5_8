@@ -68,8 +68,16 @@ void setOSP_Led(bool state)
 
 void setAmp_Mute_1(bool state)  
 { 
-    HAL_GPIO_WritePin(AMP_Mute1_Port, AMP_Mute1_Pin, state); 
-    HAL_GPIO_WritePin(AMP_Mute1_Port, AMP_Mute1_Pin, state); 
+    if(state == false)
+    {
+        HAL_GPIO_WritePin(AMP_Mute1_Port, AMP_Mute1_Pin, true); 
+        HAL_GPIO_WritePin(AMP_Mute1_Port, AMP_Mute1_Pin, true); 
+    }
+    else if(state == true)
+    {
+        HAL_GPIO_WritePin(AMP_Mute1_Port, AMP_Mute1_Pin, false); 
+        HAL_GPIO_WritePin(AMP_Mute1_Port, AMP_Mute1_Pin, false);  
+    }
 }
 
 void setAmp_Mute_2(bool state)  
