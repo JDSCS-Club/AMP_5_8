@@ -27938,28 +27938,12 @@ void MyPrintf_USART1(char * format, ... );
 
     extern I2C_HandleTypeDef hi2c1;
     extern I2C_HandleTypeDef hi2c2;
-     
-     
-	 void MX_I2C_Process(void);
+    
 		 
      void MX_I2C1_Init(void);
      void MX_I2C2_Init(void);
     
-     void AMP_Init(uint16_t Address); 
-    
-    
      
-    
-    
-      void AMP_Mute_OFF(
-                   uint16_t Address1, 
-                   uint16_t Address2, 
-                   uint16_t Address3);
-     
-      void AMP_Mute_ON(
-                   uint16_t Address1,uint8_t ad_ch1,
-                   uint16_t Address2,uint8_t ad_ch2,
-                   uint16_t Address3,uint8_t ad_ch3);
           
           
     
@@ -27970,11 +27954,7 @@ void MyPrintf_USART1(char * format, ... );
      int I2C_HAL_ReadBytes(I2C_HandleTypeDef *hi2c,uint16_t DevAddress,uint16_t MemAddress, uint8_t *pData,uint16_t RxBufferSize);
      
      
-     void AMP_FAULT(void);
-     
-     void AMP_SPK_CHECK(void);
-     
-     int AMP_PowOn_Check(void);
+    
      
      void processCurrentVal(void);
      
@@ -28257,8 +28237,6 @@ void ONTD(uint8_t IN,uint8_t *OUT,uint8_t MS,int *CLK );
 
 void PRINT_SYSLOG(char *format, ...);
 
-
-void AUDIO_AMP_Boot_Set(void);
 
 
 
@@ -30027,6 +30005,20 @@ void tcp_echoclient_connect(void);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 _Bool getAmp1_Pault(void);        
 _Bool getAmp2_Pault(void);        
 _Bool getAmp3_Pault(void);        
@@ -31597,6 +31589,7 @@ uint8_t mAlarmAEventCallback_Flag = 5;
 
 
 uint8_t mDI_CheckFlag = 0;
+uint8_t RemDI_CheckFlag = 0;
 
 
  
@@ -31679,14 +31672,14 @@ const unsigned char completeVersion[] =
 const unsigned char completeVersionBuild[] = 
 {
 	'B',
-	("Aug  7 2023"[ 9]),
-	("Aug  7 2023"[10]),
+	("Aug  9 2023"[ 9]),
+	("Aug  9 2023"[10]),
    
-	((("Aug  7 2023"[0] == 'O') || ("Aug  7 2023"[0] == 'N') || ("Aug  7 2023"[0] == 'D')) ? '1' : '0'),
-	( (("Aug  7 2023"[0] == 'J' && "Aug  7 2023"[1] == 'a' && "Aug  7 2023"[2] == 'n')) ? '1' : (("Aug  7 2023"[0] == 'F')) ? '2' : (("Aug  7 2023"[0] == 'M' && "Aug  7 2023"[1] == 'a' && "Aug  7 2023"[2] == 'r')) ? '3' : (("Aug  7 2023"[0] == 'A' && "Aug  7 2023"[1] == 'p')) ? '4' : (("Aug  7 2023"[0] == 'M' && "Aug  7 2023"[1] == 'a' && "Aug  7 2023"[2] == 'y')) ? '5' : (("Aug  7 2023"[0] == 'J' && "Aug  7 2023"[1] == 'u' && "Aug  7 2023"[2] == 'n')) ? '6' : (("Aug  7 2023"[0] == 'J' && "Aug  7 2023"[1] == 'u' && "Aug  7 2023"[2] == 'l')) ? '7' : (("Aug  7 2023"[0] == 'A' && "Aug  7 2023"[1] == 'u')) ? '8' : (("Aug  7 2023"[0] == 'S')) ? '9' : (("Aug  7 2023"[0] == 'O')) ? '0' : (("Aug  7 2023"[0] == 'N')) ? '1' : (("Aug  7 2023"[0] == 'D')) ? '2' : '?' ),
+	((("Aug  9 2023"[0] == 'O') || ("Aug  9 2023"[0] == 'N') || ("Aug  9 2023"[0] == 'D')) ? '1' : '0'),
+	( (("Aug  9 2023"[0] == 'J' && "Aug  9 2023"[1] == 'a' && "Aug  9 2023"[2] == 'n')) ? '1' : (("Aug  9 2023"[0] == 'F')) ? '2' : (("Aug  9 2023"[0] == 'M' && "Aug  9 2023"[1] == 'a' && "Aug  9 2023"[2] == 'r')) ? '3' : (("Aug  9 2023"[0] == 'A' && "Aug  9 2023"[1] == 'p')) ? '4' : (("Aug  9 2023"[0] == 'M' && "Aug  9 2023"[1] == 'a' && "Aug  9 2023"[2] == 'y')) ? '5' : (("Aug  9 2023"[0] == 'J' && "Aug  9 2023"[1] == 'u' && "Aug  9 2023"[2] == 'n')) ? '6' : (("Aug  9 2023"[0] == 'J' && "Aug  9 2023"[1] == 'u' && "Aug  9 2023"[2] == 'l')) ? '7' : (("Aug  9 2023"[0] == 'A' && "Aug  9 2023"[1] == 'u')) ? '8' : (("Aug  9 2023"[0] == 'S')) ? '9' : (("Aug  9 2023"[0] == 'O')) ? '0' : (("Aug  9 2023"[0] == 'N')) ? '1' : (("Aug  9 2023"[0] == 'D')) ? '2' : '?' ),
    
-	(("Aug  7 2023"[4] >= '0') ? ("Aug  7 2023"[4]) : '0'),
-	("Aug  7 2023"[ 5]),
+	(("Aug  9 2023"[4] >= '0') ? ("Aug  9 2023"[4]) : '0'),
+	("Aug  9 2023"[ 5]),
 	
 	
     
@@ -31772,6 +31765,8 @@ int main(void)
 	
 
 	Flash_Init();
+    SPI_FLASH_Init();
+    
 	HAL_Delay(10);
 
 
@@ -31781,11 +31776,15 @@ int main(void)
     MX_ADC3_Init();
     
     
+    
+    
+    njw1192_default_value();
 
-	
-	OLED_1in3_c_test();
-    OLED_Print(); 
-	
+    njw1192_mute(0);
+
+    
+    setAmp_Mute_1(0);
+    setAmp_Mute_2(0);
 	
 	
     MyPrintf_USART1("SystemClock  = %d/ AHB(HCLK) : %d / APB1(PCLK1) : %d / APBP2(PCLK2) : %d \n\r", HAL_RCC_GetSysClockFreq(), HAL_RCC_GetHCLKFreq(), HAL_RCC_GetPCLK1Freq(), HAL_RCC_GetPCLK2Freq());
@@ -31823,7 +31822,6 @@ int main(void)
     sprintf(&mLCDPrintBuf[2][0], "--------------------");
     
     
-    AUDIO_AMP_Boot_Set();
     
     WWDG_Init(); 
     
@@ -31869,7 +31867,7 @@ int main(void)
                 s_100msCng = HAL_GetTick();
 
                     
-                MX_I2C_Process();
+            
 
             }
         
@@ -31891,25 +31889,18 @@ int main(void)
 
                 sOLED_InitCnt++;
                 
-                if(!(sOLED_InitCnt % 120) && (sOLED_InitCnt < 400)) 
-                {
-                    OLED_1in3_C_Init();
-                }
+               
                 
                 mLed_Process_Flag.sOLED_Display_Flag = 1;
                 
-               
-                
-                OLED_Print(); 
-            
-                
+             
                 
                 mLed_Process_Flag.sOLED_Display_Flag = 0;
                 
                 if(mLed_Process_Flag.sAudio_Play_mode == 1)
                 {
                     
-                    AMP_FAULT();
+                   
                 }
                 
                  
@@ -31925,10 +31916,10 @@ int main(void)
                                     (1 + '0'),
                                     (0 + '0'),
                                     (2 + '0'),
-                                    ((("Aug  7 2023"[0] == 'O') || ("Aug  7 2023"[0] == 'N') || ("Aug  7 2023"[0] == 'D')) ? '1' : '0'),
-                                    ( (("Aug  7 2023"[0] == 'J' && "Aug  7 2023"[1] == 'a' && "Aug  7 2023"[2] == 'n')) ? '1' : (("Aug  7 2023"[0] == 'F')) ? '2' : (("Aug  7 2023"[0] == 'M' && "Aug  7 2023"[1] == 'a' && "Aug  7 2023"[2] == 'r')) ? '3' : (("Aug  7 2023"[0] == 'A' && "Aug  7 2023"[1] == 'p')) ? '4' : (("Aug  7 2023"[0] == 'M' && "Aug  7 2023"[1] == 'a' && "Aug  7 2023"[2] == 'y')) ? '5' : (("Aug  7 2023"[0] == 'J' && "Aug  7 2023"[1] == 'u' && "Aug  7 2023"[2] == 'n')) ? '6' : (("Aug  7 2023"[0] == 'J' && "Aug  7 2023"[1] == 'u' && "Aug  7 2023"[2] == 'l')) ? '7' : (("Aug  7 2023"[0] == 'A' && "Aug  7 2023"[1] == 'u')) ? '8' : (("Aug  7 2023"[0] == 'S')) ? '9' : (("Aug  7 2023"[0] == 'O')) ? '0' : (("Aug  7 2023"[0] == 'N')) ? '1' : (("Aug  7 2023"[0] == 'D')) ? '2' : '?' ),
-                                    (("Aug  7 2023"[4] >= '0') ? ("Aug  7 2023"[4]) : '0'),
-                                    ("Aug  7 2023"[ 5]));
+                                    ((("Aug  9 2023"[0] == 'O') || ("Aug  9 2023"[0] == 'N') || ("Aug  9 2023"[0] == 'D')) ? '1' : '0'),
+                                    ( (("Aug  9 2023"[0] == 'J' && "Aug  9 2023"[1] == 'a' && "Aug  9 2023"[2] == 'n')) ? '1' : (("Aug  9 2023"[0] == 'F')) ? '2' : (("Aug  9 2023"[0] == 'M' && "Aug  9 2023"[1] == 'a' && "Aug  9 2023"[2] == 'r')) ? '3' : (("Aug  9 2023"[0] == 'A' && "Aug  9 2023"[1] == 'p')) ? '4' : (("Aug  9 2023"[0] == 'M' && "Aug  9 2023"[1] == 'a' && "Aug  9 2023"[2] == 'y')) ? '5' : (("Aug  9 2023"[0] == 'J' && "Aug  9 2023"[1] == 'u' && "Aug  9 2023"[2] == 'n')) ? '6' : (("Aug  9 2023"[0] == 'J' && "Aug  9 2023"[1] == 'u' && "Aug  9 2023"[2] == 'l')) ? '7' : (("Aug  9 2023"[0] == 'A' && "Aug  9 2023"[1] == 'u')) ? '8' : (("Aug  9 2023"[0] == 'S')) ? '9' : (("Aug  9 2023"[0] == 'O')) ? '0' : (("Aug  9 2023"[0] == 'N')) ? '1' : (("Aug  9 2023"[0] == 'D')) ? '2' : '?' ),
+                                    (("Aug  9 2023"[4] >= '0') ? ("Aug  9 2023"[4]) : '0'),
+                                    ("Aug  9 2023"[ 5]));
                 
                 
                 
@@ -31973,8 +31964,7 @@ int main(void)
             
             mLed_Process_Flag.sSpk_check_Flag = 1;
                 
-            AMP_SPK_CHECK();
-            
+
         }
     
             
@@ -32022,7 +32012,7 @@ int main(void)
 			netif_set_down(&gnetif);
     
             
-			MyPrintf_USART1("%s(%d)\r\n", __func__, 566);
+			MyPrintf_USART1("%s(%d)\r\n", __func__, 564);
             
 			
             
@@ -32132,34 +32122,34 @@ static void BSP_Config(void)
 	HAL_GPIO_Init(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0800U)), &GPIO_InitStructure);
   
     
-	
-	do { volatile uint32_t tmpreg = 0x00U; ((((RCC_TypeDef *) ((0x40000000U + 0x00020000U) + 0x3800U))->AHB1ENR) |= ((0x1U << (3U)))); tmpreg = ((((RCC_TypeDef *) ((0x40000000U + 0x00020000U) + 0x3800U))->AHB1ENR) & ((0x1U << (3U)))); ((void)(tmpreg)); } while(0U);
 
-	GPIO_InitStructure.Pin = ((uint16_t)0x0080);
-	GPIO_InitStructure.Pull = 0x00000000U;
-	GPIO_InitStructure.Mode = 0x00000001U;
-    GPIO_InitStructure.Speed = 0x00000003U;
-	HAL_GPIO_Init(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), &GPIO_InitStructure);
-    
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0080), GPIO_PIN_SET);
-    
 
-	
-	do { volatile uint32_t tmpreg = 0x00U; ((((RCC_TypeDef *) ((0x40000000U + 0x00020000U) + 0x3800U))->AHB1ENR) |= ((0x1U << (3U)))); tmpreg = ((((RCC_TypeDef *) ((0x40000000U + 0x00020000U) + 0x3800U))->AHB1ENR) & ((0x1U << (3U)))); ((void)(tmpreg)); } while(0U);
 
-	GPIO_InitStructure.Pin = ((uint16_t)0x0100) | ((uint16_t)0x0200) | ((uint16_t)0x0400) | ((uint16_t)0x0800) | ((uint16_t)0x1000) | ((uint16_t)0x2000);
-	GPIO_InitStructure.Pull = 0x00000000U;
-	GPIO_InitStructure.Mode = 0x00000001U;
-	GPIO_InitStructure.Speed = 0x00000003U;
-	HAL_GPIO_Init(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), &GPIO_InitStructure);
-    
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0100), GPIO_PIN_SET);
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0200), GPIO_PIN_SET);
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0400), GPIO_PIN_SET);
-    
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0800), GPIO_PIN_SET);
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x1000), GPIO_PIN_SET);
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x2000), GPIO_PIN_SET);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 	
@@ -32449,6 +32439,8 @@ int d_AR_Cnt;
 uint8_t d_RS_Flag;
 int d_RS_Cnt;
 
+uint8_t d_BR_Flag;
+int d_BR_Cnt;
 
 void Time_Main(void)
 {
@@ -32465,9 +32457,12 @@ void Time_Main(void)
     ONTD(getSW_SL(),&d_SL_Flag,5,&d_SL_Cnt);
     ONTD(getSW_AR(),&d_AR_Flag,5,&d_AR_Cnt);
     ONTD(getSW_RS(),&d_RS_Flag,5,&d_RS_Cnt);
+    ONTD(getSW_Broad(),&d_BR_Flag,5,&d_BR_Cnt);
+
         
             
-    mDI_CheckFlag = ((d_SR_Flag << 3) | (d_SL_Flag << 2) | ( d_AR_Flag<< 1) | (d_RS_Flag & 0x01));  
+    mDI_CheckFlag = ((d_BR_Flag << 4) |(d_AR_Flag << 3) | (d_SR_Flag << 2) | ( d_SL_Flag<< 1) | (d_RS_Flag & 0x01));  
+    
     
     
     
@@ -32495,6 +32490,9 @@ void Time_Main(void)
             
             processCurrentVal();
             
+            
+           
+            
         }
         else if(mLed_Process_Flag.sCurrentTestFlag == 0)
         {
@@ -32510,7 +32508,7 @@ void Time_Main(void)
 	{
 
         
-        d_10Sec_Cnt++;
+        
 
         
         sprintf(&mLCDPrintBuf[0][0], "IP : %s", ip4addr_ntoa(&gnetif.ip_addr));
@@ -32568,6 +32566,26 @@ void Time_Main(void)
         
         
         mTimerFlag_10s = 1;
+        d_10Sec_Cnt++;
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         
 		if ((((&gnetif)->flags & 0x04U) ? (u8_t)1 : (u8_t)0))  
@@ -32598,7 +32616,7 @@ void Time_Main(void)
                  udp_SysLog_Connect(0," @@@@  CPU Processing SystemReset ");
 			     MyPrintf_USART1(" @@@@  CPU Processing SystemReset \n\r");
 
-			     HAL_NVIC_SystemReset(); 
+			     
                 
             }
 			
@@ -32612,7 +32630,7 @@ void Time_Main(void)
 			if ((m_Main_TIM_Cnt_Reset) >= 6) 
 			{
                 
-				HAL_NVIC_SystemReset();
+				
 			}
 
             
@@ -32754,15 +32772,17 @@ static void RTC_TimeShow(uint8_t* showtime)
 
 	HAL_RTC_SetAlarm_IT(&RtcHandle, &salarmstructure, 0x00000001U);
 
-	
+	MyPrintf_USART1("--------Timer Count : %02d:%02d:%02d \n\r", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds));
     
-    if(getSW_RS()|| getSW_AR() || getSW_SL() || getSW_SL()) 
+    if(getSW_RS()|| getSW_AR() || getSW_SL() || getSW_SR() || getSW_Broad()) 
     {
-        sprintf(&mLCDPrintBuf[3][0], "%02d:%02d:%02d", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds));
+        MyPrintf_USART1("RS-%02d:AR-%02d:SL-%02d:SR-%02d:BR-%02d\n\r" , getSW_RS(),getSW_AR(),getSW_SL() ,getSW_SR(),getSW_Broad());
+       
+   
     }
     else
     {
-        sprintf(&mLCDPrintBuf[3][0], "%02d:%02d:%02d-(%02d/%02d)", BCD_BIN(stimestructureget.Hours), BCD_BIN(stimestructureget.Minutes), BCD_BIN(stimestructureget.Seconds),IP_ADDR1_INPUT_DATA,IP_ADDR2_INPUT_DATA);
+      
 
     }
 }
@@ -32997,62 +33017,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 
 
  
-void AUDIO_AMP_Boot_Set(void)
-{
-    uint8_t     nRbuf_1[2];
-    
-    
-	setAMP_Standby(1); 
-    HAL_Delay(10);
-    setAMP_Standby(0); 
-    HAL_Delay(10);
-    setAMP_Standby(1); 
-    
-    njw1192_default_value();
-    HAL_Delay(10);
-    
-    
-    
-    
-	AMP_Init(AMP_ID_1);
-    
-    HAL_Delay(100);
-	
 
-    AMP_Mute_ON(AMP_ID_1, AMP_CH_All, AMP_ID_2, AMP_CH_All, AMP_ID_3, AMP_CH_All); 
-	
-    HAL_Delay(100);
-    
-    nRbuf_1[0] = 0xFF;
-    I2C_HAL_ReadBytes(&hi2c2, AMP_ID_1, 0x06, (uint8_t *)nRbuf_1, 1);
-    MyPrintf_USART1("getAmp1 Mode read :%02X \r\n", nRbuf_1[0]); 
-
-    nRbuf_1[0] = 0xFF;
-    I2C_HAL_ReadBytes(&hi2c2, AMP_ID_2, 0x06, (uint8_t *)nRbuf_1, 1);     
-    MyPrintf_USART1("getAmp2 Mode read :%02X \r\n", nRbuf_1[0]); 
-
-    nRbuf_1[0] = 0xFF;
-    I2C_HAL_ReadBytes(&hi2c2, AMP_ID_3, 0x06, (uint8_t *)nRbuf_1, 1);
-    MyPrintf_USART1("getAmp3 Mode read :%02X \r\n", nRbuf_1[0]); 
-   
-    
-	
-    
-    setBk_Out_1(0);
-    setBk_Out_3(0);
-    setBk_Out_5(0);
-
-    setBk_Out_6(0);
-        
-
-    
-	
-	setAmp_Mute_1(1);
-	setAmp_Mute_2(1);
-    
-    njw1192_mute(1); 
-    
-}
 
 
 

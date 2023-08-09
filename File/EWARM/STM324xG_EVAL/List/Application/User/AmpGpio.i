@@ -27940,28 +27940,12 @@ void MyPrintf_USART1(char * format, ... );
 
     extern I2C_HandleTypeDef hi2c1;
     extern I2C_HandleTypeDef hi2c2;
-     
-     
-	 void MX_I2C_Process(void);
+    
 		 
      void MX_I2C1_Init(void);
      void MX_I2C2_Init(void);
     
-     void AMP_Init(uint16_t Address); 
-    
-    
      
-    
-    
-      void AMP_Mute_OFF(
-                   uint16_t Address1, 
-                   uint16_t Address2, 
-                   uint16_t Address3);
-     
-      void AMP_Mute_ON(
-                   uint16_t Address1,uint8_t ad_ch1,
-                   uint16_t Address2,uint8_t ad_ch2,
-                   uint16_t Address3,uint8_t ad_ch3);
           
           
     
@@ -27972,11 +27956,7 @@ void MyPrintf_USART1(char * format, ... );
      int I2C_HAL_ReadBytes(I2C_HandleTypeDef *hi2c,uint16_t DevAddress,uint16_t MemAddress, uint8_t *pData,uint16_t RxBufferSize);
      
      
-     void AMP_FAULT(void);
-     
-     void AMP_SPK_CHECK(void);
-     
-     int AMP_PowOn_Check(void);
+    
      
      void processCurrentVal(void);
      
@@ -28259,8 +28239,6 @@ void ONTD(uint8_t IN,uint8_t *OUT,uint8_t MS,int *CLK );
 
 void PRINT_SYSLOG(char *format, ...);
 
-
-void AUDIO_AMP_Boot_Set(void);
 
 
 
@@ -28887,6 +28865,20 @@ extern mLED_PROCESS_Flag mLed_Process_Flag;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 _Bool getAmp1_Pault(void);        
 _Bool getAmp2_Pault(void);        
 _Bool getAmp3_Pault(void);        
@@ -28964,117 +28956,18 @@ void setOSP_Led(_Bool state)
 
 
 
-void setAMP_Standby(_Bool state)
-{ 
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0080), state); 
-	HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0080), state); 
-
-}
-
-
-
-
-
-
-void setBk_Out_1(_Bool state)    
-{ 
-    
-    if(state == 0) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0100), 1); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0100), 1); 
-    }
-    else if(state == 1) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0100), 0); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0100), 0); 
-    }
-}
-
-
-void setBk_Out_2(_Bool state)    
-{ 
-    if(state == 0) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0200), 1); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0200), 1); 
-    }
-    else if(state == 1) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0200), 0); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0200), 0); 
-    }
-}
-
-
-
-void setBk_Out_3(_Bool state)    
-{ 
-    if(state == 0) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0400), 1); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0400), 1); 
-    }
-    else if(state == 1) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0400), 0); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0400), 0); 
-    }
-}
-
-
-void setBk_Out_4(_Bool state)    
-{ 
-    if(state == 0) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0800), 1); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0800), 1); 
-    }
-    else if(state == 1) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0800), 0); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x0800), 0); 
-    }
-}
-
-
-void setBk_Out_5(_Bool state)    
-{ 
-    if(state == 0) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x1000), 1); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x1000), 1); 
-    }
-    else if(state == 1) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x1000), 0); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x1000), 0); 
-    }
-    
-}
-
-
-void setBk_Out_6(_Bool state)    
-{ 
-    if(state == 0) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x2000), 1); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x2000), 1); 
-    }
-    else if(state == 1) 
-    {
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x2000), 0); 
-	    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x2000), 0); 
-    }
-    
-}
-
-
-
 void setAmp_Mute_1(_Bool state)  
 { 
-    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x4000), state); 
-    HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x4000), state); 
+    if(state == 0)
+    {
+        HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x4000), 1); 
+        HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x4000), 1); 
+    }
+    else if(state == 1)
+    {
+        HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x4000), 0); 
+        HAL_GPIO_WritePin(((GPIO_TypeDef *) ((0x40000000U + 0x00020000U) + 0x0C00U)), ((uint16_t)0x4000), 0);  
+    }
 }
 
 void setAmp_Mute_2(_Bool state)  

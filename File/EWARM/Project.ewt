@@ -1458,6 +1458,9 @@
                 <name>$PROJ_DIR$\..\Src\main.c</name>
             </file>
             <file>
+                <name>$PROJ_DIR$\..\Src\spi_flash.c</name>
+            </file>
+            <file>
                 <name>$PROJ_DIR$\..\Src\stm32f4xx_hal_msp.c</name>
             </file>
             <file>
@@ -1562,9 +1565,6 @@
                     <name>$PROJ_DIR$\..\Drivers\display\Example\ImageData.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\Drivers\display\Example\OLED_1in3_c_test.c</name>
-                </file>
-                <file>
                     <name>$PROJ_DIR$\..\Drivers\display\Example\test.h</name>
                 </file>
             </group>
@@ -1576,9 +1576,6 @@
             </group>
             <group>
                 <name>OLED</name>
-                <file>
-                    <name>$PROJ_DIR$\..\Drivers\display\OLED\OLED_1in3_c.c</name>
-                </file>
             </group>
         </group>
         <group>

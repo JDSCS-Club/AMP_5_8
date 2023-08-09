@@ -16,7 +16,7 @@
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
     </StLinkDriver>
     <DebugChecksum>
-        <Checksum>68010544</Checksum>
+        <Checksum>4167686131</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -155,8 +155,8 @@
         <PowerConnectPC>1</PowerConnectPC>
     </SWOManager>
     <ArmDriver>
-        <EnableCache>1</EnableCache>
         <EnforceMemoryConfiguration>1</EnforceMemoryConfiguration>
+        <EnableCache>1</EnableCache>
     </ArmDriver>
     <PlDdfRanges>
         <ConfigRanges0>Memory ROM 536805376 32768 1</ConfigRanges0>
@@ -332,8 +332,9 @@
         <Bp0>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Middlewares\Third_Party\LwIP\src\core\ipv4\igmp.c}.505.3" 0 0 1 "" 0 "" 0</Bp0>
         <Bp1>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Middlewares\Third_Party\LwIP\src\core\ipv4\igmp.c}.498.3" 0 0 1 "" 0 "" 0</Bp1>
         <Bp2>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Middlewares\Third_Party\LwIP\src\core\ipv4\igmp.c}.503.3" 0 0 1 "" 0 "" 0</Bp2>
-        <Bp3>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\I2C.c}.436.14" 0 0 1 "" 0 "" 0</Bp3>
-        <Count>4</Count>
+        <Bp3>_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\I2C.c}.24.1" 0 0 1 "" 0 "" 0</Bp3>
+        <Bp4>_ 0 "EMUL_DATA" "SST26VF032B_FLASH_ID" 0 0 0 0 4294967295</Bp4>
+        <Count>5</Count>
     </Breakpoints2>
     <Aliases>
         <A0>_ "C:\Users\jang duksu\Documents\Github\SEPTA_ML\LwIP_TCP_Echo_Server(SDI)_Ver1.1.1\EWARM\startup_stm32f407xx.s" ""</A0>
